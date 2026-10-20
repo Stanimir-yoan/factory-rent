@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a0a0b" />
+  <meta name="description" content="Build your FACTORY private-event rental package. Choose your setup, calculate an estimated cost, and send an inquiry." />
+  <title>FACTORY — Private Event Rental</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #09090a;
+      --panel: #131315;
+      --panel-2: #19191b;
+      --panel-3: #212124;
+      --border: #303034;
+      --muted: #96969d;
+      --ink: #f3f3f2;
+      --red: #f4443d;
+      --red-2: #bd2924;
+      --radius: 13px;
+      --font-body: Inter, "Arial", "Helvetica Neue", sans-serif;
+      --font-display: Impact, "Arial Narrow", "Arial Black", sans-serif;
+      --container: 1336px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); line-height: 1.5; }
+    body::before { content:""; position: fixed; z-index:-1; inset:0; pointer-events:none; background: radial-gradient(circle at 88% 5%, rgba(244,68,61,.095), transparent 32%), repeating-linear-gradient(0deg, transparent 0 39px, rgba(255,255,255,.012) 40px 41px), repeating-linear-gradient(90deg, transparent 0 39px, rgba(255,255,255,.012) 40px 41px); }
+    button, input, select, textarea { font:inherit; }
+    button { cursor:pointer; }
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible { outline: 2px solid var(--red); outline-offset:4px; }
+    a { color:inherit; }
+    .shell { width:min(var(--container), calc(100% - 88px)); margin:auto; }
+    .topbar { border-bottom:1px solid #272729; background:rgba(9,9,10,.9); }
+    .topbar-inner { display:flex; align-items:center; justify-content:space-between; gap:24px; min-height:82px; }
+    .brand { display:flex; align-items:center; gap:14px; text-decoration:none; }
+    .brand-mark { width:45px; height:45px; background:var(--red); display:flex; align-items:center; justify-content:center; color:#0a0a0a; font:900 34px/1 var(--font-display); letter-spacing:-3px; transform:skew(-4deg); }
+    .brand-name { font: 900 27px/1 var(--font-display); letter-spacing:.085em; }
+    .brand-sub { display:block; font-size:9px; letter-spacing:.29em; color:#bbb; margin-top:6px; font-weight:800; }
+    .top-right { display:flex; align-items:center; gap:25px; font-size:10px; text-transform:uppercase; letter-spacing:.15em; font-weight:850; color:#aaa; }
+    .live-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--red); box-shadow:0 0 0 4px rgba(244,68,61,.12); margin-right:9px; }
+    .header-tag { border:1px solid #363638; color:#fff; padding:9px 12px; }
+    .hero { padding:73px 0 63px; display:grid; grid-template-columns:minmax(0,1.25fr) minmax(210px,.46fr); align-items:end; gap:34px; border-bottom:1px solid var(--border); }
+    .eyebrow { display:flex; align-items:center; gap:13px; font-size:11px; letter-spacing:.26em; font-weight:900; color:var(--red); text-transform:uppercase; }
+    .eyebrow::before { content:""; width:25px; height:2px; background:var(--red); }
+    h1 { margin:25px 0 21px; font:900 clamp(67px,8.65vw,129px)/.89 var(--font-display); letter-spacing:-.012em; text-transform:uppercase; }
+    h1 span { display:block; } h1 .outline { color:transparent; -webkit-text-stroke: 1.5px var(--red); }
+    .hero-copy { color:#aaaab0; font-size:15px; max-width:580px; margin:22px 0 0; line-height:1.72; }
+    .hero-aside { border-left:1px solid #3c3c3f; padding:0 0 3px 25px; margin-bottom:5px; }
+    .aside-number { font:900 61px/1 var(--font-display); color:var(--red); }
+    .hero-aside p { font-size:11px; max-width:220px; color:#b1b1b5; text-transform:uppercase; letter-spacing:.14em; line-height:1.9; font-weight:700; margin:14px 0 0; }
+    .disclaimer { display:flex; align-items:flex-start; gap:11px; color:#d6c2aa; background:#261e17; border:1px solid #604730; border-radius:10px; padding:12px 16px; font-size:12px; margin-top:24px; }
+    .disclaimer svg { flex:none; width:17px; height:17px; margin-top:1px; }
+    .layout { display:grid; grid-template-columns:minmax(0,1fr) 360px; align-items:start; gap:48px; padding-top:54px; padding-bottom:95px; }
+    .section { margin-bottom:51px; }
+    .section-head { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:19px; }
+    .section-head-left { display:flex; align-items:baseline; gap:15px; }
+    .section-index { font:900 12px var(--font-body); color:var(--red); letter-spacing:.1em; }
+    h2 { font:900 clamp(27px,3vw,37px)/1.1 var(--font-display); letter-spacing:.055em; text-transform:uppercase; margin:0; }
+    .section-note { color:#88888e; text-transform:uppercase; letter-spacing:.1em; font-size:10px; margin:9px 0 0; text-align:right; }
+    .base-card { display:flex; justify-content:space-between; align-items:center; gap:20px; min-height:156px; padding:25px 28px; border:1px solid var(--red); border-radius:var(--radius); background:linear-gradient(110deg, #2c1414, #181316 60%, #181819); position:relative; overflow:hidden; }
+    .base-card::after { content:"F"; position:absolute; font:900 190px/1 var(--font-display); right:19%; bottom:-77px; color:rgba(244,68,61,.075); pointer-events:none; }
+    .base-card > * { z-index:1; }
+    .base-check { display:inline-flex; gap:7px; align-items:center; color:var(--red); font-size:10px; letter-spacing:.16em; font-weight:900; }
+    .base-card h3 { font:900 27px/1.1 var(--font-display); letter-spacing:.05em; margin:16px 0 8px; }
+    .base-card p { margin:0; color:#b4a9aa; font-size:12px; }
+    .base-amount { flex:none; text-align:right; }
+    .base-amount strong { display:block; font:900 43px/1 var(--font-display); }
+    .base-amount span { display:block; margin-top:9px; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:#beb0b0; }
+    .service-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:13px; }
+    .service-card { min-width:0; border:1px solid var(--border); background:linear-gradient(143deg,#1a1a1c,#141416); border-radius:var(--radius); padding:20px 20px 17px; transition:border-color .15s, background .15s; }
+    .service-card.is-selected { border-color:var(--red); background:linear-gradient(145deg,#281819,#171416); }
+    .service-button { display:block; width:100%; padding:0; background:transparent; border:0; text-align:left; color:inherit; }
+    .card-top { display:flex; align-items:start; justify-content:space-between; }
+    .card-icon { width:37px; height:37px; border:1px solid #3c3c3e; background:#242426; border-radius:9px; display:grid; place-items:center; color:#dadadd; }
+    .card-icon svg { width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+    .check-icon { width:23px; height:23px; border-radius:6px; border:1px solid #56565b; display:grid; place-items:center; color:transparent; font-size:14px; font-weight:bold; transition:all .15s; }
+    .is-selected .check-icon { background:var(--red); border-color:var(--red); color:#0b0b0b; }
+    .service-card h3 { font-size:13px; font-weight:850; letter-spacing:.065em; line-height:1.3; text-transform:uppercase; margin:25px 0 7px; }
+    .service-card p { min-height:36px; font-size:12px; line-height:1.5; color:#93939a; margin:0 0 19px; }
+    .card-bottom { display:flex; align-items:baseline; justify-content:space-between; gap:6px; }
+    .service-price { font-size:20px; font-weight:850; letter-spacing:-.03em; }
+    .per-unit { font-size:10px; color:#85858c; }
+    .qty-row { border-top:1px solid #343034; margin-top:16px; padding-top:13px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .qty-row[hidden] { display:none !important; }
+    .qty-title { text-transform:uppercase; letter-spacing:.12em; font-size:10px; color:#adadb1; font-weight:800; }
+    .stepper { display:flex; align-items:center; gap:4px; border:1px solid #555154; border-radius:7px; padding:3px; }
+    .stepper button { width:28px; height:25px; color:#fff; background:#303034; border:none; border-radius:4px; font-size:18px; display:grid; place-items:center; line-height:1; }
+    .stepper button:hover:not(:disabled) { background:var(--red); color:#000; }
+    .stepper button:disabled { opacity:.25; cursor:not-allowed; }
+    .stepper output { font-size:12px; font-weight:800; min-width:24px; text-align:center; }
+    .vj-options { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+    .vj-option { position:relative; display:block; cursor:pointer; min-width:0; }
+    .vj-option input { position:absolute; width:1px; height:1px; opacity:0; }
+    .vj-content { display:flex; flex-direction:column; height:100%; min-height:155px; padding:20px; border:1px solid var(--border); background:#171719; border-radius:var(--radius); transition:all .15s; }
+    .vj-option input:focus-visible + .vj-content { outline:2px solid var(--red); outline-offset:3px; }
+    .vj-option input:checked + .vj-content { border-color:var(--red); background:#271819; }
+    .vj-radio { width:19px; height:19px; border:1px solid #666; border-radius:50%; margin-bottom:15px; display:grid; place-items:center; }
+    .vj-radio::after { content:""; width:9px; height:9px; border-radius:50%; background:var(--red); transform:scale(0); transition:transform .15s; }
+    input:checked + .vj-content .vj-radio { border-color:var(--red); }
+    input:checked + .vj-content .vj-radio::after { transform:scale(1); }
+    .vj-title { font-size:13px; text-transform:uppercase; font-weight:850; letter-spacing:.05em; }
+    .vj-desc { color:#96969c; font-size:11px; margin:7px 0 18px; line-height:1.5; flex:1; }
+    .vj-price { font-size:17px; font-weight:850; }
+    .details-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:17px 13px; }
+    .field { display:flex; flex-direction:column; gap:9px; }
+    .field.full { grid-column:1 / -1; }
+    .field label { text-transform:uppercase; letter-spacing:.14em; font-size:10px; font-weight:850; color:#a7a7ad; }
+    .field input, .field textarea, .field select { border:1px solid #353539; border-radius:9px; outline:0; width:100%; min-height:49px; color:#fafafa; background:#18181a; padding:12px 14px; font-size:13px; }
+    .field input:focus, .field textarea:focus, .field select:focus { border-color:var(--red); }
+    .field input::placeholder, .field textarea::placeholder { color:#6d6d73; }
+    .field textarea { min-height:110px; resize:vertical; }
+    input::-webkit-calendar-picker-indicator { filter:invert(1); opacity:.7; cursor:pointer; }
+    .side { position:sticky; top:24px; }
+    .estimate-panel { border:1px solid #3a3a3d; background:linear-gradient(155deg,#1f1f22,#151517); border-radius:16px; overflow:hidden; box-shadow:0 15px 55px rgba(0,0,0,.26); }
+    .estimate-head { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:24px 24px 19px; border-bottom:1px solid #343437; }
+    .estimate-head h2 { font-size:25px; }
+    .estimate-head span { color:var(--red); font-size:10px; letter-spacing:.16em; font-weight:850; }
+    .estimate-body { padding:25px 24px 24px; }
+    .small-label { color:#a6a6ad; font-size:10px; font-weight:800; letter-spacing:.17em; text-transform:uppercase; }
+    .total-number { font:900 clamp(55px,5vw,72px)/1 var(--font-display); margin:9px 0 12px; letter-spacing:-.02em; }
+    .estimated-note { font-size:11px; color:#96969b; }
+    .breakdown { margin:26px 0 24px; border-top:1px solid #38383b; border-bottom:1px solid #38383b; padding:19px 0; display:grid; gap:13px; }
+    .breakdown-row { display:flex; justify-content:space-between; gap:12px; color:#d3d3d6; font-size:12px; }
+    .breakdown-row .item-name { display:flex; flex-direction:column; gap:2px; }
+    .breakdown-row small { font-size:10px; color:#88888d; }
+    .breakdown-row strong { font-weight:800; color:#fff; white-space:nowrap; }
+    .empty-addons { font-size:11px; color:#818189; font-style:italic; }
+    .cta { width:100%; border:0; border-radius:8px; min-height:54px; padding:13px 14px; display:flex; align-items:center; justify-content:center; gap:12px; font-size:11px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; transition:transform .12s, background .12s; }
+    .cta:hover { transform:translateY(-1px); }
+    .cta.primary { background:var(--red); color:#120a0a; }
+    .cta.primary:hover { background:#ff645d; }
+    .cta.secondary { background:transparent; color:#f2f2f2; border:1px solid #444448; margin-top:10px; }
+    .cta.secondary:hover { background:#262629; }
+    .cta svg { width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:2.1; stroke-linecap:round; stroke-linejoin:round; }
+    .legal { font-size:10px; color:#818189; line-height:1.6; text-align:center; margin:15px 0 0; }
+    .side-footer { padding:20px 5px; display:flex; align-items:center; gap:14px; }
+    .side-footer-mark { color:var(--red); font:900 39px/1 var(--font-display); }
+    .side-footer p { margin:0; font-size:9px; line-height:1.8; letter-spacing:.18em; font-weight:900; color:#909096; text-transform:uppercase; }
+    .page-footer { border-top:1px solid #29292c; padding:24px 0 30px; color:#85858b; }
+    .footer-inside { display:flex; justify-content:space-between; gap:15px; align-items:center; font-size:10px; text-transform:uppercase; letter-spacing:.13em; font-weight:850; }
+    .footer-inside strong { color:#fff; }
+    .toast { position:fixed; left:50%; bottom:24px; transform:translate(-50%,120px); opacity:0; padding:13px 21px; border:1px solid #515155; border-radius:9px; background:#252529; color:#fff; font-size:13px; z-index:8; transition:transform .22s ease, opacity .22s ease; box-shadow:0 10px 30px #0008; text-align:center; pointer-events:none; }
+    .toast.show { transform:translate(-50%,0); opacity:1; }
+    .mobile-total { display:none; }
+    @media (max-width:1100px) { .layout { grid-template-columns:minmax(0,1fr) 315px; gap:25px; } .shell { width:min(var(--container),calc(100% - 50px)); } }
+    @media (max-width:880px) { .hero { grid-template-columns:1fr; padding:50px 0 42px; } .hero-aside { display:none; } .layout { grid-template-columns:1fr; gap:10px; padding-top:38px; } .side { position:static; } .estimate-panel { max-width:none; } .footer-inside { flex-wrap:wrap; } }
+    @media (max-width:590px) { .shell { width:calc(100% - 34px); } .topbar-inner { min-height:68px; } .brand-mark { width:39px; height:39px; font-size:30px; } .brand-name { font-size:23px; } .brand-sub { font-size:7px; } .top-right { gap:5px; } .top-right .location { display:none; } .header-tag { font-size:9px; padding:8px; } .hero { padding-top:49px; } h1 { font-size:clamp(59px,15vw,85px); margin:19px 0; } .hero-copy { font-size:13px; } .layout { padding-bottom:60px; } .section { margin-bottom:38px; } .section-head-left { gap:11px; } .section-note { font-size:9px; max-width:110px; } .base-card { min-height:145px; padding:19px; } .base-card h3 { font-size:23px; } .base-amount strong { font-size:35px; } .service-grid { gap:10px; } .service-card { padding:16px 13px; } .service-card h3 { font-size:11px; min-height:28px; } .service-card p { font-size:11px; min-height:55px; } .service-price { font-size:19px; } .per-unit { font-size:9px; } .card-icon { width:34px; height:34px; } .vj-options { gap:8px; } .vj-content { padding:14px 10px; min-height:158px; } .vj-title { font-size:11px; } .vj-desc { font-size:10px; } .vj-price { font-size:16px; } .details-grid { gap:13px 10px; } .field input,.field textarea,.field select { font-size:12px; padding:11px; } .mobile-total { display:flex; position:sticky; bottom:0; z-index:4; align-items:center; justify-content:space-between; gap:12px; padding:12px 17px calc(12px + env(safe-area-inset-bottom)); background:#151518; border-top:1px solid #414146; box-shadow:0 -12px 35px #0008; } .mobile-total .mini-label { display:block; font-size:9px; color:#a2a2a8; font-weight:850; letter-spacing:.13em; text-transform:uppercase; } .mobile-total strong { font:900 28px/1.12 var(--font-display); } .mobile-total a { text-decoration:none; border-radius:7px; background:var(--red); color:#080809; padding:11px 14px; font-size:10px; letter-spacing:.08em; font-weight:900; white-space:nowrap; } .footer-inside { font-size:9px; } }
+    @media (prefers-reduced-motion:reduce) { *, *::before,*::after { scroll-behavior:auto !important; transition:none !important; } }
+    @media print { @page { margin:18mm; } body { background:#fff !important; color:#111; } body::before,.topbar,.hero,.configurator,.side-footer,.page-footer,.mobile-total,.cta,.legal,.disclaimer { display:none !important; } .shell { width:100%; } .layout { display:block; padding:0; } .side { position:static; } .estimate-panel { box-shadow:none; border:1px solid #777; background:#fff; color:#111; } .breakdown-row,.breakdown-row strong,.estimate-head h2 { color:#111; } .total-number { color:#111; } .estimate-head span { color:#444; } .small-label,.estimated-note,.breakdown-row small { color:#555; } }
+  </style>
+</head>
+<body>
+  <!-- Replace prices and bookingEmail in the CONFIG object near the bottom before publishing. -->
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-disc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M17.8 5.2c-1.8-1-3.7-1.5-5.8-1.5"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.15a4 4 0 0 1 0 7.7"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22c5-2.5 8-6 8-10V5l-8-3-8 3v7c0 4 3 7.5 8 10Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-audio" viewBox="0 0 24 24"><path d="M2 10v4m4-8v12m4-15v18m4-13v8m4-11v14m4-9v4"/></symbol>
+    <symbol id="i-video" viewBox="0 0 24 24"><rect x="2" y="5" width="15" height="14" rx="2"/><path d="m17 10 5-3v10l-5-3"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/></symbol>
+    <symbol id="i-megaphone" viewBox="0 0 24 24"><path d="m3 11 15-6v14L3 13v-2Z"/><path d="M18 10a3 3 0 0 1 0 4M6 14l2 7h4l-2-5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-7-7 7 7-7 7"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></symbol>
+  </svg>
+
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="#top" aria-label="FACTORY home">
+        <span class="brand-mark">F</span>
+        <span><span class="brand-name">FACTORY</span><span class="brand-sub">YOUR FAVORITE SECRET RAVE</span></span>
+      </a>
+      <div class="top-right"><span class="location"><span class="live-dot"></span> PLOVDIV, BG</span><span class="header-tag">PRIVATE RENTAL / 2026</span></div>
+    </div>
+  </header>
+
+  <main id="top">
+    <div class="shell">
+      <section class="hero" aria-labelledby="hero-title">
+        <div>
+          <div class="eyebrow">Factory / Private Events</div>
+          <h1 id="hero-title"><span>YOUR FAVORITE</span><span class="outline">SECRET EVENT</span></h1>
+          <p class="hero-copy">The space is yours. Build a setup that fits your event — from essential venue hire to a full audiovisual experience. Select what you need and get an instant estimate.</p>
+          <div class="disclaimer" role="note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 10v6M12 7h.01"/></svg>
+            <span><strong>Demo pricing:</strong> All prices shown are illustrative placeholders, not official FACTORY rates. Update the CONFIG section in this file before publishing.</span>
+          </div>
+        </div>
+        <div class="hero-aside"><div class="aside-number">01—04</div><p>Choose your setup.<br />Make it personal.<br />Send your inquiry.</p></div>
+      </section>
+
+      <div class="layout">
+        <div class="configurator">
+          <section class="section" aria-labelledby="base-title">
+            <div class="section-head"><div class="section-head-left"><span class="section-index">01 /</span><h2 id="base-title">The Foundation</h2></div><p class="section-note">Always included</p></div>
+            <div class="base-card"><div><span class="base-check">✓ INCLUDED IN EVERY BOOKING</span><h3>VENUE RENTAL</h3><p>Your private FACTORY space. Base rental for one event.</p></div><div class="base-amount"><strong id="base-price">€450</strong><span>Base rental / event</span></div></div>
+          </section>
+
+          <section class="section" aria-labelledby="addons-title">
+            <div class="section-head"><div class="section-head-left"><span class="section-index">02 /</span><h2 id="addons-title">Build Your Setup</h2></div><p class="section-note">Select optional services</p></div>
+            <div class="service-grid">
+              <article class="service-card" data-service="dj"><button type="button" class="service-button" aria-pressed="false" aria-label="Add DJ hardware"><div class="card-top"><span class="card-icon"><svg><use href="#i-disc"/></svg></span><span class="check-icon" aria-hidden="true">✓</span></div><h3>DJ Hardware</h3><p>DJ player and mixer setup for your artists.</p><div class="card-bottom"><strong class="service-price" data-price="dj">€120</strong><span class="per-unit">/ event</span></div></button></article>
+              <article class="service-card" data-service="bartenders"><button type="button" class="service-button" aria-pressed="false" aria-label="Add bartenders"><div class="card-top"><span class="card-icon"><svg><use href="#i-users"/></svg></span><span class="check-icon" aria-hidden="true">✓</span></div><h3>Bartenders</h3><p>Professional bar staff throughout the event.</p><div class="card-bottom"><strong class="service-price" data-price="bartenders">€85</strong><span class="per-unit">/ person</span></div></button><div class="qty-row" hidden><span class="qty-title">Staff needed</span><div class="stepper"><button type="button" data-step="-1" aria-label="Remove one bartender">−</button><output aria-label="Bartender quantity">1</output><button type="button" data-step="1" aria-label="Add one bartender">+</button></div></div></article>
+              <article class="service-card" data-service="security"><button type="button" class="service-button" aria-pressed="false" aria-label="Add security"><div class="card-top"><span class="card-icon"><svg><use href="#i-shield"/></svg></span><span class="check-icon" aria-hidden="true">✓</span></div><h3>Security</h3><p>Dedicated security personnel for your event.</p><div class="card-bottom"><strong class="service-price" data-price="security">€100</strong><span class="per-unit">/ person</span></div></button><div class="qty-row" hidden><span class="qty-title">Staff needed</span><div class="stepper"><button type="button" data-step="-1" aria-label="Remove one security staff member">−</button><output aria-label="Security quantity">1</output><button type="button" data-step="1" aria-label="Add one security staff member">+</button></div></div></article>
+              <article class="service-card" data-service="audio"><button type="button" class="service-button" aria-pressed="false" aria-label="Add audio recording"><div class="card-top"><span class="card-icon"><svg><use href="#i-audio"/></svg></span><span class="check-icon" aria-hidden="true">✓</span></div><h3>Audio Recording</h3><p>Capture your DJ set or event audio.</p><div class="card-bottom"><strong class="service-price" data-price="audio">€90</strong><span class="per-unit">/ event</span></div></button></article>
+              <article class="service-card" data-service="video"><button type="button" class="service-button" aria-pressed="false" aria-label="Add video recording"><div class="card-top"><span class="card-icon"><svg><use href="#i-video"/></svg></span><span class="check-icon" aria-hidden="true">✓</span></div><h3>Video Recording</h3><p>Event filming and raw footage capture.</p><div class="card-bottom"><strong class="service-price" data-price="video">€220</strong><span class="per-unit">/ event</span></div></button></article>
+              <article class="service-card" data-service="photo"><button type="button" class="service-button" aria-pressed="false" aria-label="Add photography"><div class="card-top"><span class="card-icon"><svg><use href="#i-camera"/></svg></span><span class="check-icon" aria-hidden="true">✓</span></div><h3>Photography</h3><p>Photographer to document the highlights.</p><div class="card-bottom"><strong class="service-price" data-price="photo">€160</strong><span class="per-unit">/ event</span></div></button></article>
+              <article class="service-card" data-service="marketing"><button type="button" class="service-button" aria-pressed="false" aria-label="Add marketing content"><div class="card-top"><span class="card-icon"><svg><use href="#i-megaphone"/></svg></span><span class="check-icon" aria-hidden="true">✓</span></div><h3>Marketing Content</h3><p>Promo assets to announce and promote your event.</p><p><b>*We strongly recommend that option as if not approved , your own may not be promoted by FACTORY</b></p><div class="card-bottom"><strong class="service-price" data-price="marketing">€110</strong><span class="per-unit">/ event</span></div></button></article>
+            </div>
+          </section>
+
+          <section class="section" aria-labelledby="vj-title">
+            <div class="section-head"><div class="section-head-left"><span class="section-index">03 /</span><h2 id="vj-title">VJ / Visual Show</h2></div><p class="section-note">Choose one</p></div>
+            <div class="vj-options" role="radiogroup" aria-label="VJ show type">
+              <label class="vj-option"><input type="radio" name="vj" value="none" checked/><span class="vj-content"><span class="vj-radio"></span><span class="vj-title">No VJ</span><span class="vj-desc">Keep it simple.</span><span class="vj-price">€0</span></span></label>
+              <label class="vj-option"><input type="radio" name="vj" value="default"/><span class="vj-content"><span class="vj-radio"></span><span class="vj-title">Default Show</span><span class="vj-desc">Ready-made visuals for your night.</span><span class="vj-price" data-price="vjDefault">€140</span></span></label>
+              <label class="vj-option"><input type="radio" name="vj" value="custom"/><span class="vj-content"><span class="vj-radio"></span><span class="vj-title">Custom Show</span><span class="vj-desc">Tailor-made visual experience.</span><span class="vj-price" data-price="vjCustom">€300</span></span></label>
+            </div>
+          </section>
+
+          <section class="section" aria-labelledby="details-title">
+            <div class="section-head"><div class="section-head-left"><span class="section-index">04 /</span><h2 id="details-title">The Details</h2></div><p class="section-note">Help us understand your event</p></div>
+            <form id="details-form" class="details-grid" novalidate>
+              <div class="field"><label for="event-name">Event name</label><input id="event-name" name="eventName" maxlength="120" placeholder="e.g. Private techno party" autocomplete="off" /></div>
+              <div class="field"><label for="event-date">Preferred date</label><input type="date" id="event-date" name="eventDate" /></div>
+              <div class="field"><label for="guest-count">Expected guests</label><input type="number" id="guest-count" name="guests" min="1" max="10000" step="1" placeholder="e.g. 70" /></div>
+              <div class="field"><label for="event-type">Event type</label><select id="event-type" name="eventType"><option value="">Select type</option><option>Private party</option><option>Rave / club night</option><option>DJ showcase</option><option>Brand / corporate</option><option>Live performance</option><option>Other</option></select></div>
+              <div class="field"><label for="contact-name">Contact name</label><input id="contact-name" name="contactName" maxlength="120" placeholder="Your name" autocomplete="name" /></div>
+              <div class="field"><label for="contact-email">Contact email</label><input type="email" id="contact-email" name="email" maxlength="254" placeholder="you@example.com" autocomplete="email" /></div>
+              <div class="field full"><label for="notes">Additional requests</label><textarea id="notes" name="notes" maxlength="2000" placeholder="Tell us about your event, special equipment, timing, creative direction or any other requirements..."></textarea></div>
+            </form>
+          </section>
+        </div>
+
+        <aside class="side" id="estimate" aria-label="Rental estimate">
+          <div class="estimate-panel">
+            <div class="estimate-head"><h2>Your Estimate</h2><span id="selected-count">BASE ONLY</span></div>
+            <div class="estimate-body">
+              <div class="small-label">Estimated Total</div>
+              <div class="total-number" id="total-number" aria-live="polite">€450</div>
+              <div class="estimated-note">Indicative price for one event</div>
+              <div class="breakdown" id="breakdown" aria-label="Cost breakdown"><div class="breakdown-row"><span>Venue rental</span><strong>€450</strong></div><div class="empty-addons">No extra services selected.</div></div>
+              <button class="cta primary" type="button" id="email-request"><span>Prepare Rental Inquiry</span><svg><use href="#i-arrow"/></svg></button>
+              <button class="cta secondary" type="button" id="copy-request"><svg><use href="#i-copy"/></svg><span>Copy Your Selection</span></button>
+              <p class="legal">This tool creates a draft inquiry in your email app. It does not submit or reserve the venue automatically. Price and availability require confirmation.</p>
+            </div>
+          </div>
+          <div class="side-footer"><div class="side-footer-mark">F</div><p>YOUR FAVORITE SECRET RAVE<br/>PLOVDIV · BULGARIA</p></div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <div class="mobile-total" aria-label="Current estimate"><div><span class="mini-label">Your estimate</span><strong id="mobile-total-amount">€450</strong></div><a href="#estimate">VIEW SUMMARY ↗</a></div>
+  <footer class="page-footer"><div class="shell footer-inside"><span><strong>FACTORY</strong> / VENUE RENTALS</span><span>BUILD YOUR NIGHT. KEEP IT UNDERGROUND.</span><span>© <span id="copyright-year">2026</span></span></div></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    "use strict";
+
+    // ======= EDIT THESE VALUES BEFORE PUBLISHING =======
+    // Every amount is a DEMO price in EUR, per event unless marked /person.
+    const CONFIG = {
+      currency: "EUR",
+      locale: "en-IE",
+      bookingEmail: "", // Set your real rental email, e.g. "rental@your-domain.com".
+      baseRental: 350,
+      prices: {
+        dj: 75,
+        bartenders: 90, // per person
+        security: 80,   // per person
+        audio: 75,
+        video: 150,
+        photo: 100,
+        marketing: 50,
+        vjDefault: 50,
+        vjCustom: 150
+      },
+      maxStaff: 8
+    };
+    // =====================================================
+
+    const SERVICE_NAMES = {
+      dj: "DJ hardware", bartenders: "Bartenders", security: "Security",
+      audio: "Audio recording", video: "Video recording", photo: "Photography",
+      marketing: "Marketing content"
+    };
+    const state = {
+      selected: new Set(),
+      quantity: { bartenders: 1, security: 1 },
+      vj: "none"
+    };
+    const money = new Intl.NumberFormat(CONFIG.locale, { style: "currency", currency: CONFIG.currency, maximumFractionDigits: 0 });
+    const format = amount => money.format(amount);
+    const $ = selector => document.querySelector(selector);
+    const serviceCards = [...document.querySelectorAll(".service-card")];
+
+    $("#base-price").textContent = format(CONFIG.baseRental);
+    document.querySelectorAll("[data-price]").forEach(el => { el.textContent = format(CONFIG.prices[el.dataset.price]); });
+    $("#copyright-year").textContent = new Date().getFullYear();
+    $("#event-date").min = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+
+    serviceCards.forEach(card => {
+      const key = card.dataset.service;
+      card.querySelector(".service-button").addEventListener("click", () => {
+        state.selected.has(key) ? state.selected.delete(key) : state.selected.add(key);
+        update();
+      });
+      card.querySelectorAll("[data-step]").forEach(button => {
+        button.addEventListener("click", () => {
+          state.quantity[key] = Math.min(CONFIG.maxStaff, Math.max(1, state.quantity[key] + Number(button.dataset.step)));
+          update();
+        });
+      });
+    });
+    document.querySelectorAll('input[name="vj"]').forEach(radio => radio.addEventListener("change", ev => {
+      if (ev.target.checked) { state.vj = ev.target.value; update(); }
+    }));
+
+    function getLines() {
+      const lines = [{ name: "Venue rental", detail: "Base / one event", amount: CONFIG.baseRental }];
+      for (const [key, name] of Object.entries(SERVICE_NAMES)) {
+        if (!state.selected.has(key)) continue;
+        const quantity = state.quantity[key] || 1;
+        lines.push({ name, detail: key in state.quantity ? `${quantity} ${quantity === 1 ? "person" : "people"} × ${format(CONFIG.prices[key])}` : "Optional service", amount: quantity * CONFIG.prices[key] });
+      }
+      if (state.vj !== "none") {
+        const key = state.vj === "default" ? "vjDefault" : "vjCustom";
+        lines.push({ name: state.vj === "default" ? "VJ show — default" : "VJ show — custom", detail: "Visual performance", amount: CONFIG.prices[key] });
+      }
+      return lines;
+    }
+
+    function update() {
+      serviceCards.forEach(card => {
+        const key = card.dataset.service;
+        const selected = state.selected.has(key);
+        card.classList.toggle("is-selected", selected);
+        card.querySelector(".service-button").setAttribute("aria-pressed", String(selected));
+        card.querySelector(".service-button").setAttribute("aria-label", `${selected ? "Remove" : "Add"} ${SERVICE_NAMES[key]}`);
+        const quantityRow = card.querySelector(".qty-row");
+        if (quantityRow) {
+          quantityRow.hidden = !selected;
+          quantityRow.querySelector("output").textContent = state.quantity[key];
+          quantityRow.querySelector('[data-step="-1"]').disabled = state.quantity[key] <= 1;
+          quantityRow.querySelector('[data-step="1"]').disabled = state.quantity[key] >= CONFIG.maxStaff;
+        }
+      });
+      const lines = getLines();
+      const total = lines.reduce((sum, item) => sum + item.amount, 0);
+      $("#total-number").textContent = format(total);
+      $("#mobile-total-amount").textContent = format(total);
+      const addons = lines.length - 1;
+      $("#selected-count").textContent = addons ? `${addons} ADD-ON${addons !== 1 ? "S" : ""}` : "BASE ONLY";
+      const breakdown = $("#breakdown");
+      breakdown.replaceChildren();
+      lines.forEach(line => {
+        const row = document.createElement("div"); row.className = "breakdown-row";
+        const left = document.createElement("span"); left.className = "item-name";
+        const title = document.createElement("span"); title.textContent = line.name;
+        const detail = document.createElement("small"); detail.textContent = line.detail;
+        const price = document.createElement("strong"); price.textContent = format(line.amount);
+        left.append(title, detail); row.append(left, price); breakdown.appendChild(row);
+      });
+      if (!addons) {
+        const empty = document.createElement("div"); empty.className = "empty-addons";
+        empty.textContent = "No extra services selected."; breakdown.appendChild(empty);
+      }
+    }
+
+    function getRequestText() {
+      const val = id => $(id).value.trim();
+      const lines = getLines();
+      const total = lines.reduce((sum, line) => sum + line.amount, 0);
+      const details = [
+        ["Event name", val("#event-name")], ["Preferred date", val("#event-date")],
+        ["Expected guests", val("#guest-count")], ["Event type", val("#event-type")],
+        ["Contact name", val("#contact-name")], ["Contact email", val("#contact-email")]
+      ];
+      return [
+        "FACTORY — PRIVATE EVENT RENTAL INQUIRY",
+        "",
+        "EVENT DETAILS",
+        ...details.map(([label, value]) => `${label}: ${value || "Not specified"}`),
+        "",
+        "REQUESTED SERVICES",
+        ...lines.map(line => `• ${line.name}${line.detail && line.name !== "Venue rental" ? ` (${line.detail})` : ""}: ${format(line.amount)}`),
+        "",
+        `ESTIMATED TOTAL: ${format(total)}`,
+        "",
+        `ADDITIONAL REQUESTS\n${val("#notes") || "None"}`,
+        "",
+        "Prices are indicative examples, subject to confirmation. This is an inquiry, not a reservation."
+      ].join("\n");
+    }
+
+    let toastTimer;
+    function toast(message) {
+      const el = $("#toast");
+      el.textContent = message; el.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove("show"), 3300);
+    }
+    $("#copy-request").addEventListener("click", async () => {
+      const text = getRequestText();
+      try {
+        if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(text);
+        else {
+          const textarea = document.createElement("textarea"); textarea.value = text;
+          textarea.style.cssText = "position:fixed;left:-9999px;top:0";
+          document.body.appendChild(textarea); textarea.select();
+          const copied = document.execCommand("copy"); textarea.remove();
+          if (!copied) throw new Error("Copy was not supported");
+        }
+        toast("Your event selection was copied.");
+      } catch (_) { window.prompt("Copy the text below:", text); }
+    });
+    $("#email-request").addEventListener("click", () => {
+      const date = $("#event-date").value;
+      const name = $("#event-name").value.trim() || "Private event";
+      const subject = `FACTORY rental inquiry — ${name}${date ? ` — ${date}` : ""}`;
+      const address = CONFIG.bookingEmail.trim();
+      if (!address) toast("Email recipient is not configured. Add it in CONFIG before publishing.");
+      const href = `mailto:${encodeURIComponent(address)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(getRequestText())}`;
+      window.location.href = href;
+    });
+    update();
+  </script>
+</body>
+</html>
