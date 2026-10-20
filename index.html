@@ -42,6 +42,7 @@
     .live-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--red); box-shadow:0 0 0 4px rgba(244,68,61,.12); margin-right:9px; }
     .header-tag { border:1px solid #363638; color:#fff; padding:9px 12px; }
     .hero { padding:73px 0 63px; display:grid; grid-template-columns:minmax(0,1.25fr) minmax(210px,.46fr); align-items:end; gap:34px; border-bottom:1px solid var(--border); }
+    .hero-title { font-size: 6rem; }
     .eyebrow { display:flex; align-items:center; gap:13px; font-size:11px; letter-spacing:.26em; font-weight:900; color:var(--red); text-transform:uppercase; }
     .eyebrow::before { content:""; width:25px; height:2px; background:var(--red); }
     h1 { margin:25px 0 21px; font:900 clamp(67px,8.65vw,129px)/.89 var(--font-display); letter-spacing:-.012em; text-transform:uppercase; }
@@ -265,7 +266,7 @@
       currency: "EUR",
       locale: "en-IE",
       bookingEmail: "", // Set your real rental email, e.g. "rental@your-domain.com".
-      baseRental: 350,
+      baseRental: 300,
       prices: {
         dj: 75,
         bartenders: 90, // per person
