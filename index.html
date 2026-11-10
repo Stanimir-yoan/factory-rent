@@ -47,8 +47,6 @@
     h1 { margin:25px 0 21px; font:900 clamp(67px,8.65vw,129px)/.89 var(--font-display); letter-spacing:-.012em; text-transform:uppercase; }
     h1 span { display:block; } h1 .outline { color:transparent; -webkit-text-stroke: 1.5px var(--red); }
     .hero-copy { color:#aaaab0; font-size:15px; max-width:580px; margin:22px 0 0; line-height:1.72; }
-    .disclaimer { display:flex; align-items:flex-start; gap:11px; color:#d6c2aa; background:#261e17; border:1px solid #604730; border-radius:10px; padding:12px 16px; font-size:12px; margin-top:24px; }
-    .disclaimer svg { flex:none; width:17px; height:17px; margin-top:1px; }
     .layout { display:grid; grid-template-columns:minmax(0,1fr) 360px; align-items:start; gap:48px; padding-top:54px; padding-bottom:95px; }
     .section { margin-bottom:51px; }
     .section-head { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:19px; }
@@ -157,7 +155,7 @@
   </style>
 </head>
 <body>
-  <!-- Replace prices and bookingEmail in the CONFIG object near the bottom before publishing. -->
+  <!-- Update prices in the CONFIG object near the bottom before publishing. -->
   <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
     <symbol id="i-disc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M17.8 5.2c-1.8-1-3.7-1.5-5.8-1.5"/></symbol>
     <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.15a4 4 0 0 1 0 7.7"/></symbol>
@@ -187,10 +185,6 @@
           <div class="eyebrow">Factory / Private Events</div>
           <h1 id="hero-title"><span>YOUR FAVORITE</span><span class="outline">SECRET EVENT</span></h1>
           <p class="hero-copy">The space is yours. Build a setup that fits your event — from essential venue hire to a full audiovisual experience. Select what you need and get an instant estimate.</p>
-          <div class="disclaimer" role="note">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 10v6M12 7h.01"/></svg>
-            <span><strong>Demo pricing:</strong> All prices shown are illustrative placeholders, not official FACTORY rates. Update the CONFIG section in this file before publishing.</span>
-          </div>
         </div>
       </section>
 
@@ -262,7 +256,7 @@
               <div class="breakdown" id="breakdown" aria-label="Cost breakdown"><div class="breakdown-row"><span>Foundation rental</span><strong>€500</strong></div><div class="empty-addons">No extra services selected.</div></div>
               <button class="cta primary" type="button" id="email-request"><span>Prepare Rental Inquiry</span><svg><use href="#i-arrow"/></svg></button>
               <button class="cta secondary" type="button" id="copy-request"><svg><use href="#i-copy"/></svg><span>Copy Your Selection</span></button>
-              <p class="legal">This tool creates a draft inquiry in your email app. It does not submit or reserve the venue automatically. Price and availability require confirmation.</p>
+              <p class="legal">Opens a prefilled message in Gmail. Review it and click Send to submit your inquiry. This does not reserve the venue; price and availability require confirmation.</p>
             </div>
           </div>
           <div class="side-footer"><div class="side-footer-mark">F</div><p>YOUR FAVORITE SECRET RAVE<br/>PLOVDIV · BULGARIA</p></div>
@@ -283,7 +277,7 @@
     const CONFIG = {
       currency: "EUR",
       locale: "en-IE",
-      bookingEmail: "", // Set your real rental email, e.g. "rental@your-domain.com".
+      bookingEmail: "f4c70ry.official@gmail.com", // Receives prefilled Gmail rental inquiries.
       baseRental: 450,
       prices: {
         dj: 140,
@@ -459,10 +453,23 @@
       const date = $("#event-date").value;
       const name = $("#event-name").value.trim() || "Private event";
       const subject = `FACTORY rental inquiry — ${name}${date ? ` — ${date}` : ""}`;
-      const address = CONFIG.bookingEmail.trim();
-      if (!address) toast("Email recipient is not configured. Add it in CONFIG before publishing.");
-      const href = `mailto:${encodeURIComponent(address)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(getRequestText())}`;
-      window.location.href = href;
+      const params = new URLSearchParams({
+        view: "cm",
+        fs: "1",
+        to: CONFIG.bookingEmail,
+        su: subject,
+        body: getRequestText()
+      });
+      const gmailUrl = `https://mail.google.com/mail/?${params.toString()}`;
+
+      // Open Gmail in a new tab. If the browser blocks the tab, use the current one.
+      const gmailTab = window.open(gmailUrl, "_blank");
+      if (gmailTab) {
+        gmailTab.opener = null;
+        toast("Gmail is ready — review the inquiry and click Send.");
+      } else {
+        window.location.assign(gmailUrl);
+      }
     });
     update();
   </script>
