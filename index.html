@@ -254,9 +254,8 @@
               <div class="total-number" id="total-number" aria-live="polite">€500</div>
               <div class="estimated-note">Indicative price for one event</div>
               <div class="breakdown" id="breakdown" aria-label="Cost breakdown"><div class="breakdown-row"><span>Foundation rental</span><strong>€500</strong></div><div class="empty-addons">No extra services selected.</div></div>
-              <button class="cta primary" type="button" id="email-request"><span>Send Inquiry as email</span><svg><use href="#i-arrow"/></svg></button>
-              <button class="cta secondary" type="button" id="copy-request"><svg><use href="#i-copy"/></svg><span>Copy Inquiry as plain text</span></button>
-              <p class="legal">Opens a prefilled message in Gmail. Review it and click Send to submit your inquiry or COPY the info as plain text and send it to us as offer. *This does not reserve the venue; price and availability require confirmation.</p>
+              <button class="cta primary" type="button" id="copy-request"><svg><use href="#i-copy"/></svg><span>Copy Your Selection</span></button>
+              <p class="legal">Copy your selected services, event details and estimated total to share with FACTORY. Prices and availability require confirmation.</p>
             </div>
           </div>
           <div class="side-footer"><div class="side-footer-mark">F</div><p>YOUR FAVORITE SECRET RAVE<br/>PLOVDIV · BULGARIA</p></div>
@@ -277,7 +276,6 @@
     const CONFIG = {
       currency: "EUR",
       locale: "en-IE",
-      bookingEmail: "f4c70ry.official@gmail.com", // Receives prefilled Gmail rental inquiries.
       baseRental: 450,
       prices: {
         dj: 140,
@@ -448,28 +446,6 @@
         }
         toast("Your event selection was copied.");
       } catch (_) { window.prompt("Copy the text below:", text); }
-    });
-    $("#email-request").addEventListener("click", () => {
-      const date = $("#event-date").value;
-      const name = $("#event-name").value.trim() || "Private event";
-      const subject = `FACTORY rental inquiry — ${name}${date ? ` — ${date}` : ""}`;
-      const params = new URLSearchParams({
-        view: "cm",
-        fs: "1",
-        to: CONFIG.bookingEmail,
-        su: subject,
-        body: getRequestText()
-      });
-      const gmailUrl = `https://mail.google.com/mail/?${params.toString()}`;
-
-      // Open Gmail in a new tab. If the browser blocks the tab, use the current one.
-      const gmailTab = window.open(gmailUrl, "_blank");
-      if (gmailTab) {
-        gmailTab.opener = null;
-        toast("Gmail is ready — review the inquiry and click Send.");
-      } else {
-        window.location.assign(gmailUrl);
-      }
     });
     update();
   </script>
